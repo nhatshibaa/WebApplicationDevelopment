@@ -5,50 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MVCMovie.Data;
-using MVCMovie.Models;
+using MvcFood.Data;
+using MvcFood.Models;
 
-namespace MVCMovie.Controllers
+namespace MvcFood.Controllers
 {
-    public class MoviesController : Controller
+    public class FoodsController : Controller
     {
-        private readonly MVCMovieContext _context;
+        private readonly MvcFoodContext _context;
 
-        public MoviesController(MVCMovieContext context)
+        public FoodsController(MvcFoodContext context)
         {
             _context = context;
         }
 
-        // GET: Movies
-        public async Task<IActionResult> Index(string movieGenre, string searchString)
+        // GET: Foods
+        public async Task<IActionResult> Index()
         {
-            // Use LINQ to get list of genres.
-            IQueryable<string> genreQuery = from m in _context.Movie
-                                            orderby m.Genre
-                                            select m.Genre;
-            var movies = from m in _context.Movie
-                         select m;
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                movies = movies.Where(s => s.Title!.Contains(searchString));
-            }
-
-            if (!string.IsNullOrEmpty(movieGenre))
-            {
-                movies = movies.Where(x => x.Genre == movieGenre);
-            }
-
-            var movieGenreVM = new MovieGenreViewModel
-            {
-                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Movies = await movies.ToListAsync()
-            };
-
-            return View(movieGenreVM);
+            return View(await _context.Food.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        // GET: Foods/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,39 +33,39 @@ namespace MVCMovie.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var food = await _context.Food
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (food == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(food);
         }
 
-        // GET: Movies/Create
+        // GET: Foods/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Foods/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Name,ManufacturingDate,Category,Price")] Food food)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
+                _context.Add(food);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(food);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Foods/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -96,22 +73,22 @@ namespace MVCMovie.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie.FindAsync(id);
-            if (movie == null)
+            var food = await _context.Food.FindAsync(id);
+            if (food == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            return View(food);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Foods/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ManufacturingDate,Category,Price")] Food food)
         {
-            if (id != movie.Id)
+            if (id != food.Id)
             {
                 return NotFound();
             }
@@ -120,12 +97,12 @@ namespace MVCMovie.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
+                    _context.Update(food);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
+                    if (!FoodExists(food.Id))
                     {
                         return NotFound();
                     }
@@ -136,10 +113,10 @@ namespace MVCMovie.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            return View(food);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Foods/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -147,30 +124,30 @@ namespace MVCMovie.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movie
+            var food = await _context.Food
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (food == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(food);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Foods/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movie.FindAsync(id);
-            _context.Movie.Remove(movie);
+            var food = await _context.Food.FindAsync(id);
+            _context.Food.Remove(food);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovieExists(int id)
+        private bool FoodExists(int id)
         {
-            return _context.Movie.Any(e => e.Id == id);
+            return _context.Food.Any(e => e.Id == id);
         }
     }
 }
