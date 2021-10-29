@@ -22,7 +22,7 @@ namespace MvcFood.Controllers
         // GET: Foods
         public async Task<IActionResult> Index(string foodCate ,string searchString)
         {
-            IQueryable<string> genreQuery = from m in _context.Food
+            IQueryable<string> cateQuery = from m in _context.Food
                                             orderby m.Category
                                             select m.Category;
 
@@ -39,13 +39,13 @@ namespace MvcFood.Controllers
                 foods = foods.Where(x => x.Category == foodCate);
             }
 
-            var movieGenreVM = new FoodCateViewModel
+            var foodCateVM = new FoodCateViewModel
             {
-                Category = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Category = new SelectList(await cateQuery.Distinct().ToListAsync()),
                 Foods = await foods.ToListAsync()
             };
 
-            return View(movieGenreVM);
+            return View(foodCateVM);
         }
 
         // GET: Foods/Details/5

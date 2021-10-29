@@ -65,9 +65,9 @@ section {
   border-radius: .5rem;
 }
 
-.btn:hover {
-  background: #130f40;
-}
+    .btn:hover {
+        background: #54ebf0;
+    }
 
 .header {
   position: -webkit-sticky;
