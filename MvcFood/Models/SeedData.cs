@@ -28,7 +28,8 @@ namespace MvcFood.Models
                         Name = "Kem chocolate",
                         ManufacturingDate = DateTime.Parse("2021-10-29"),
                         Category = "Kem",
-                        Price = 1.99M
+                        Price = 1.99M,
+                        Rating = "7"
                     },
 
                     new Food
@@ -36,7 +37,8 @@ namespace MvcFood.Models
                         Name = "Mỳ tôm Hảo Hảo",
                         ManufacturingDate = DateTime.Parse("2021-10-29"),
                         Category = "Mỳ gói",
-                        Price = 3.39M
+                        Price = 3.39M,
+                        Rating = "10"
                     },
 
                     new Food
@@ -44,7 +46,8 @@ namespace MvcFood.Models
                         Name = "Bim bim",
                         ManufacturingDate = DateTime.Parse("2021-10-29"),
                         Category = "Đồ ăn vặt",
-                        Price = 1.59M
+                        Price = 1.59M,
+                        Rating = "7"
                     },
 
                     new Food
@@ -52,7 +55,17 @@ namespace MvcFood.Models
                         Name = "Gà rán KFC",
                         ManufacturingDate = DateTime.Parse("2021-10-29"),
                         Category = "Đồ ăn nhanh",
-                        Price = 9.99M
+                        Price = 9.99M,
+                        Rating = "8"
+                    },
+
+                    new Food
+                    {
+                        Name = "Gà rán KFC",
+                        ManufacturingDate = DateTime.Parse("2021-10-29"),
+                        Category = "Đồ ăn nhanh",
+                        Price = 9.99M,
+                        Rating = "9"
                     }
 
 

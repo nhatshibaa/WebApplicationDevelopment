@@ -20,9 +20,32 @@ namespace MvcFood.Controllers
         }
 
         // GET: Foods
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string foodCate ,string searchString)
         {
-            return View(await _context.Food.ToListAsync());
+            IQueryable<string> genreQuery = from m in _context.Food
+                                            orderby m.Category
+                                            select m.Category;
+
+            var foods = from m in _context.Food
+                         select m;
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                foods = foods.Where(s => s.Name.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(foodCate))
+            {
+                foods = foods.Where(x => x.Category == foodCate);
+            }
+
+            var movieGenreVM = new FoodCateViewModel
+            {
+                Category = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                Foods = await foods.ToListAsync()
+            };
+
+            return View(movieGenreVM);
         }
 
         // GET: Foods/Details/5
@@ -54,7 +77,7 @@ namespace MvcFood.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ManufacturingDate,Category,Price")] Food food)
+        public async Task<IActionResult> Create([Bind("Id,Name,ManufacturingDate,Category,Price,Rating")] Food food)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +109,7 @@ namespace MvcFood.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ManufacturingDate,Category,Price")] Food food)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ManufacturingDate,Category,Price,Rating")] Food food)
         {
             if (id != food.Id)
             {
