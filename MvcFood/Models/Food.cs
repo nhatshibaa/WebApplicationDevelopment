@@ -20,9 +20,9 @@ namespace MvcFood.Models
         [DataType(DataType.Date)]
         public DateTime ManufacturingDate { get; set; }
 
-        [RegularExpression(@"^[A-Z]+[a-zA-Z\s]*$")]
+        [StringLength(60, MinimumLength = 3)]
         [Required]
-        [StringLength(30)]
+        //[StringLength(30)]
         [Display(Name = "Danh mục")]
         public string Category { get; set; }
 
@@ -32,7 +32,7 @@ namespace MvcFood.Models
         [Column(TypeName ="decimal(18,2)")]
         public decimal Price { get; set; }
 
-        [RegularExpression(@"^[A-Z]+[a-zA-Z0-9""'\s-]*$")]
+        [Range(1, 10)]
         [StringLength(5)]
         [Required]
         [Display(Name = "Đánh giá")]

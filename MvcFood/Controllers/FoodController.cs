@@ -8,9 +8,22 @@ namespace MvcFood.Controllers
 {
     public class FoodController : Controller
     {
-        public IActionResult Index()
+        //public IActionResult Index()
+        //{
+        //    return View();
+        //}
+
+        public string Index()
         {
-            return View();
+            return "This is my default action...";
+        }
+
+        // 
+        // GET: /HelloWorld/Welcome/ 
+
+        public string Welcome()
+        {
+            return "This is the Welcome action method...";
         }
     }
 }
